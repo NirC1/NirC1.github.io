@@ -1,4 +1,4 @@
-# Real-Time Piano Note Recognition System 🎹
+# Real-Time Piano Note Recognition System
 
 **Author:** Nir Cohen  
 **Role:** Electrical Engineering Student @ Tel Aviv University  
@@ -46,7 +46,7 @@ This project demonstrates:
 ---
 
 
-## 📐 System Architecture
+## System Architecture
 
 ```mermaid
 flowchart LR
@@ -82,7 +82,7 @@ flowchart LR
 
 ---
 
-## 🚀 Technical Highlights
+## Technical Highlights
 
 * **Sampling Frequency:** 7.272 kHz
 * **FFT Size:** 128 samples
@@ -128,7 +128,7 @@ Key sections include:
 
 ---
 
-## 📊 Academic Impact
+## Academic Impact
 
 This project received a **grade of 100** in the **Hardware Lab course** and reflects my interest in **signal processing, control, and embedded systems**.
 
