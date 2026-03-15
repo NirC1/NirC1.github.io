@@ -6,7 +6,7 @@ Nir Cohen | Electrical Engineering, Tel Aviv University
 
 ## Overview
 
-A Python system for separating mixed audio into individual sources using Non-Negative Matrix Factorization. Given a mixed recording (e.g. a [drum loop](#drum-separation----joint-learning) or [noisy speech](#speech-denoising)), the system recovers the individual components by factorizing the magnitude spectrogram.
+A Python system for separating mixed audio into individual sources using Non-Negative Matrix Factorization. Given a mixed recording (e.g. a [drum loop](#drum-separation---joint-learning) or [noisy speech](#speech-denoising)), the system recovers the individual components by factorizing the magnitude spectrogram.
 
 Three methods are implemented, each building on the last:
 
@@ -37,12 +37,12 @@ Mixed audio and optional reference clips are transformed via STFT into magnitude
 
 ## Examples
 
-### Drum Separation -- Joint Learning
-
+### Drum Separation - Joint Learning
+Given a mixture of kick, snare, hihat, and a reference clip of each, the joint learning method successfully separates the components while adapting the dictionaries to fit both the references and the mixture, outperforming blind and informed methods which struggle with dictionary mismatch.
 ![Joint learning decomposition of a drum loop](/assets/images/nmf/drums_joint_learning.png)
 
 ### Speech Denoising
-
+With a noisy speech recording and a noise-only reference, the system effectively isolates the speech by learning a noise dictionary from the reference and separating it from the mixture, resulting in improved intelligibility.
 Noisy input:
 <audio controls src="/assets/audio/nmf/speech_noisy.wav"></audio>
 
