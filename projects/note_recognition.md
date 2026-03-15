@@ -1,136 +1,54 @@
-# Real-Time Piano Note Recognition System
+# Real-Time Piano Note Recognition
 
-**Author:** Nir Cohen  
-**Role:** Electrical Engineering Student @ Tel Aviv University  
-**Focus Areas:** Signal Processing • Embedded Systems • Harmonic Analysis • Algorithms • Digital Logic
+Nir Cohen | Electrical Engineering, Tel Aviv University
 
 ---
 
-## Project Overview
-This project implements a **real-time piano note recognition system** on an **Arduino microcontroller** using a microphone input.  
-The system applies **Fast Fourier Transform (FFT)** and **harmonic analysis** to detect fundamental frequencies and identify piano notes in real time.  
-Recognized notes are transmitted over **I²C** to a second Arduino, which can play back or process the sequence.
+## Overview
 
-This project demonstrates:
-- **DSP skills** – FFT, harmonic detection, noise rejection.  
-- **Embedded systems** – interrupt-driven ADC sampling, timer configuration, hardware-level optimization.  
-- **Algorithms** – decision logic for note recognition, error minimization using harmonic matching.  
-- **Digital logic** – direct register manipulation for ADC and timers (no reliance on Arduino delay functions).  
-- **System integration** – real-time recognition and communication across microcontrollers.  
+A real-time note recognition system running on an Arduino. A microphone captures audio, the MCU computes an FFT, and a harmonic matching algorithm identifies piano notes (C4--B4). Recognized sequences are transmitted over I2C to a second Arduino for playback.
+
+The system uses no Arduino timing abstractions -- ADC sampling is interrupt-driven via direct register configuration (ADMUX, ADCSRA, TCCR1A/B), giving deterministic sampling at 7.2 kHz.
 
 ---
 
-## Key Features
-- **Real-time sampling**:  
-  - ADC configured via registers for deterministic sampling.  
-  - Timer1 interrupts for precise control at ~7.2 kHz.  
-
-- **FFT-based frequency analysis**:  
-  - `arduinoFFT` library used to compute spectra from sampled audio.  
-  - DC removal + Hamming window for cleaner spectral output.  
-
-- **Harmonic detection algorithm**:  
-  - Identifies peaks in the FFT magnitude spectrum.  
-  - Matches peaks against a set of target piano note frequencies (`C4 – B4`).  
-  - Uses squared error minimization across harmonics to select the best candidate note.  
-
-- **Robust recognition logic**:  
-  - Noise rejection via amplitude thresholds.  
-  - Timeout-based resets for incomplete sequences.  
-  - Tolerance to repeated notes (counts length of sustained notes).  
-
-- **Sequence verification**:  
-  - Compares recognized sequence against a predefined **correct melody**.  
-  - Success and failure patterns transmitted via I²C to a secondary device.  
-
----
-
-
-## System Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
-    subgraph input[Signal Input]
-        mic[Microphone]
-    end
-
-    subgraph preprocessing[Preprocessing]
-        adc[Arduino ADC + Timer ISR]
-    end
-
-    subgraph dsp[DSP Core]
-        fft[FFT + Harmonic Analysis]
-    end
-
-    subgraph logic[Recognition Logic]
-        recog[Note Recognition State Machine]
-    end
-
-    subgraph output[Output / Integration]
-        i2c[I²C Transmission]
-        playback[Secondary Arduino Playback]
-    end
-
-    mic --> adc --> fft --> recog --> i2c --> playback
+    mic[Microphone] --> adc[ADC + Timer ISR] --> fft[FFT + Harmonic Analysis] --> sm[State Machine] --> i2c[I2C] --> playback[Playback Arduino]
 ```
 
-* **Signal Input:** Microphone at analog pin A0.
-* **Preprocessing:** Interrupt-driven ADC sampling at fixed rate.
-* **DSP Core:** FFT + harmonic matching.
-* **Recognition:** State machine for storing and validating notes.
-* **Output:** Sequence sent via I²C bus.
+Audio is sampled at a fixed rate via Timer1 interrupts. A 128-point FFT (Hamming window, DC removed) produces the magnitude spectrum. Peaks are matched against known note frequencies using squared-error minimization across harmonics. A state machine handles noise rejection, timeouts, and sequence validation before transmitting the result over I2C.
 
 ---
 
-## Technical Highlights
+## Technical Details
 
-* **Sampling Frequency:** 7.272 kHz
-* **FFT Size:** 128 samples
-* **Recognized Notes:** 7 notes (`C4, D4, E4, F4, G4, A4, B4`)
-* **Sequence Length:** 7 notes with timeout handling
-* **Embedded Techniques:**
-
-  * Direct register access (`ADMUX`, `ADCSRA`, `TCCR1A/B`)
-  * Interrupt-driven sampling & processing
-  * Memory-optimized arrays for FFT buffers
-
----
-
-## 📂 Source Code
-
-The full implementation is available here:
-👉 [View Code](../piano-recognition.ino)
-
-Key sections include:
-
-* `ISR(ADC_vect)` – handles real-time ADC sampling.
-* `computeFFT()` – applies FFT and computes magnitudes.
-* `decideFrequency()` – harmonic matching algorithm.
-* `allNotesPlayed()` – sequence validation and result handling.
+| | |
+|---|---|
+| **Platform** | Arduino (ATmega), direct register access |
+| **Sampling** | 7.272 kHz, interrupt-driven ADC |
+| **FFT** | 128 samples, Hamming window, arduinoFFT library |
+| **Recognition** | Harmonic peak matching, squared-error minimization |
+| **Notes** | C4, D4, E4, F4, G4, A4, B4 |
+| **Communication** | I2C to secondary Arduino |
 
 ---
 
-## Takeaways
+## Code
 
-* Ability to **bridge theory and practice** in DSP and embedded systems.
-* Comfort with **low-level hardware programming** (beyond Arduino abstractions).
-* Strong foundation in **signal processing, algorithms, and system design**.
-* Hands-on experience integrating **real-time embedded logic** with hardware interfaces.
+[View source](../piano-recognition.ino)
 
----
-
-## Skills Demonstrated
-
-* **DSP:** FFT, windowing, harmonic peak detection, noise filtering.
-* **Embedded Systems:** ISR design, real-time sampling, hardware register configuration.
-* **Algorithms:** Error minimization, decision logic, state machines.
-* **Communication Protocols:** I²C for multi-device integration.
+| Function | Role |
+|---|---|
+| `ISR(ADC_vect)` | Real-time ADC sampling |
+| `computeFFT()` | FFT and magnitude computation |
+| `decideFrequency()` | Harmonic matching algorithm |
+| `allNotesPlayed()` | Sequence validation and I2C transmission |
 
 ---
 
-## Academic Impact
-
-This project received a **grade of 100** in the **Hardware Lab course** and reflects my interest in **signal processing, control, and embedded systems**.
+Grade: 100 in Hardware Lab course.
 
 ---
-
