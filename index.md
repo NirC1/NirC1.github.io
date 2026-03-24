@@ -2,8 +2,9 @@
 
 I’m a 4th-year EE student focused on signals & systems, machine learning, control, and embedded.
 
-- **Projects:**  
+- **Projects:**
   - [Audio Source Separation – NMF](/projects/source_separation_nmf)
+  - [Raw Image Decoder – Blind Signal Analysis](/projects/raw_image_decoder)
   - [Real-Time Piano Note Recognition](/projects/note_recognition)
 
 - **Resume:** [PDF](/resume.pdf)  
