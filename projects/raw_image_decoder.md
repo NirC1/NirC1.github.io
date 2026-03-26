@@ -1,6 +1,6 @@
 # Raw Image Decoder via Blind Signal Analysis
 
-Nir Cohen | Electrical Engineering, Tel Aviv University
+[View on GitHub](https://github.com/NirC1/STRIDE-raw-image-decoder)
 
 ---
 

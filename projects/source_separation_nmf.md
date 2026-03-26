@@ -1,6 +1,6 @@
 # Audio Source Separation via NMF
 
-Nir Cohen | Electrical Engineering, Tel Aviv University
+Nir Cohen | Electrical Engineering, Tel Aviv University | [View on GitHub](https://github.com/NirC1/source-separaion-NMF)
 
 ---
 
